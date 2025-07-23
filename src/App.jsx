@@ -1,7 +1,9 @@
-import Tasks from "./components/Tasks";
+import Tasks from "./components/Tasks"
 
 function App() {
-  return <Tasks />;
+    const name = "test"
+    console.log(name)
+    return <Tasks />
 }
 
-export default App;
+export default App
