@@ -1,45 +1,30 @@
-import { useState } from "react"
-import Header from "./Header"
+import Button from "./Button"
+import AddIcon from "../assets/icons/add.svg?react"
+import TrashIcon from "../assets/icons/trash.svg?react"
 
-function Tasks() {
-    const [inputValue, setInputValue] = useState()
-    const [messages, setMenssages] = useState([
-        "Hello world",
-        "FSG is the best course in the world",
-    ])
-
-    function handleButtonClick() {
-        setMenssages([...messages, inputValue])
-    }
-
+const Task = () => {
     return (
-        <div>
-            <Header>
-                <h1>Add a Task</h1>
-            </Header>
-            <input
-                className="input"
-                type="text"
-                placeholder="Create your task..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-            />
-
-            <button className="button" onClick={handleButtonClick}>
-                add Task
-            </button>
-            <Header>
-                <h1>My task</h1>
-            </Header>
-            <div>
-                <ul>
-                    {messages.map((message) => {
-                        return <li key={message}>{message}</li>
-                    })}
-                </ul>
+        <div className="w-full px-8 py-16">
+            <div className="flex justify-between">
+                <div>
+                    <span className="text-xs font-semibold text-[#00ADB5]">
+                        Minhas Tarefas
+                    </span>
+                    <h2 className="text-xl font-semibold"> Minhas Trefas</h2>
+                </div>
+                <div className="flex items-center gap-3">
+                    <Button variant="ghost">
+                        Limpar tarefas
+                        <TrashIcon />
+                    </Button>
+                    <Button>
+                        <AddIcon />
+                        Nova tarefa
+                    </Button>
+                </div>
             </div>
         </div>
     )
 }
 
-export default Tasks
+export default Task
