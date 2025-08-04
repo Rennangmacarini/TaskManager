@@ -32,14 +32,14 @@ const TASKS = [
         title: "Descansar",
         description: "Assistir um filme com a família",
         time: "evening",
-        status: "not_starded",
+        status: "not_started",
     },
     {
         id: 6,
         title: "Meditar",
         description: "Meditar por 10 minutos",
         time: "evening",
-        status: "not_starded",
+        status: "not_started",
     },
 ]
 export default TASKS
