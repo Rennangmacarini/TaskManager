@@ -15,9 +15,9 @@ export {
     CloudSunIcon,
     Details,
     HomeIcon,
+    LoaderIcon,
     MoonIcon,
     SunIcon,
     TasksIcon,
     TrashIcon,
-    LoaderIcon,
 }
