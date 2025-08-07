@@ -1,9 +1,11 @@
 import Button from "./Button"
-import AddIcon from "../assets/icons/add.svg?react"
-import TrashIcon from "../assets/icons/trash.svg?react"
-import SunIcon from "../assets/icons/sun.svg?react"
-import CloudSun from "../assets/icons/cloud-sun.svg?react"
-import Moon from "../assets/icons/moon.svg?react"
+import {
+    TrashIcon,
+    AddIcon,
+    SunIcon,
+    CloudSunIcon,
+    MoonIcon,
+} from "../assets/icons"
 import TaskSeparator from "./TasksSeparator"
 import { useState } from "react"
 import TASKS from "../constants/tasks"
@@ -85,7 +87,7 @@ const Task = () => {
                 </div>
                 {/* TARDE */}
                 <div className="my-6 space-y-3">
-                    <TaskSeparator title="Tarde" icon={<CloudSun />} />
+                    <TaskSeparator title="Tarde" icon={<CloudSunIcon />} />
                     {afternoonTasks.map((task) => (
                         <TaskItem
                             key={task.id}
@@ -97,7 +99,7 @@ const Task = () => {
                 </div>
                 {/* NOITE */}
                 <div className="my-6 space-y-3">
-                    <TaskSeparator title="Noite" icon={<Moon />} />
+                    <TaskSeparator title="Noite" icon={<MoonIcon />} />
                     {eveningTasks.map((task) => (
                         <TaskItem
                             key={task.id}

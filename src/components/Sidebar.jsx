@@ -1,6 +1,5 @@
 import SidebarButton from "./SidebarButton"
-import HomeIcon from "../assets/icons/home.svg?react"
-import TaskIcon from "../assets/icons/tasks.svg?react"
+import { HomeIcon, TasksIcon } from "../assets/icons"
 
 const Sidebar = () => {
     return (
@@ -24,7 +23,7 @@ const Sidebar = () => {
                     Início
                 </SidebarButton>
                 <SidebarButton variant="selected">
-                    <TaskIcon />
+                    <TasksIcon />
                     Minhas Tarefas
                 </SidebarButton>
             </div>
