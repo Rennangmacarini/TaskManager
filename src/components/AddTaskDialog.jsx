@@ -6,7 +6,7 @@ import { CSSTransition } from "react-transition-group"
 
 import Button from "./Button"
 import Input from "./Input"
-import InputLabel from "./inputLabel"
+import InputLabel from "./InputLabel"
 
 const AddTaskDialog = ({ isOpen, handleClose }) => {
     const nodeRef = useRef()

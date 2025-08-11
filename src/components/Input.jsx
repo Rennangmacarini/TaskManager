@@ -1,4 +1,4 @@
-import InputLabel from "./inputLabel"
+import InputLabel from "./InputLabel"
 
 const Input = ({ label, ...rest }) => {
     return (
