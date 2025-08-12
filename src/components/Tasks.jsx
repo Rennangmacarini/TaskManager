@@ -53,6 +53,11 @@ const Task = () => {
         setTask(newTasks)
     }
 
+    const handleAddTaskSubmit = (task) => {
+        setTask([...tasks, task])
+        toast.success("Tarefa adicionada com sucesso!")
+    }
+
     return (
         <div className="w-full space-y-6 px-8 py-16">
             <div className="flex justify-between">
@@ -75,6 +80,7 @@ const Task = () => {
                     <AddTaskDialog
                         isOpen={addTaskDialogIsOpen}
                         handleClose={() => setAddTaskDialogIsOpen(false)}
+                        handleSubmit={handleAddTaskSubmit}
                     />
                 </div>
             </div>
