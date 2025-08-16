@@ -62,7 +62,7 @@ const Task = () => {
         <div className="w-full space-y-6 px-8 py-16">
             <div className="flex justify-between">
                 <div>
-                    <span className="text-xs font-semibold text-[#00ADB5]">
+                    <span className="text-xs font-semibold text-brand-primary">
                         Minhas Tarefas
                     </span>
                     <h2 className="text-xl font-semibold"> Minhas Trefas</h2>
@@ -86,7 +86,7 @@ const Task = () => {
             </div>
 
             {/* LISTA DE TAREFAS */}
-            <div className="rounded-xl bg-white p-6">
+            <div className="rounded-xl bg-brand-white p-6">
                 {/* MANHÃ */}
                 <div className="space-y-3">
                     <TaskSeparator title="Manhã" icon={<SunIcon />} />
