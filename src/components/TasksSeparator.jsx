@@ -10,9 +10,9 @@ const TaskSeparator = ({ title, icon }) => {
     )
 }
 
-export default TaskSeparator
-
-TaskSeparator.prototype = {
+TaskSeparator.PropTypes = {
     title: PropTypes.string.isRequired,
     icon: PropTypes.element.isRequired,
 }
+
+export default TaskSeparator
