@@ -16,7 +16,7 @@ import TaskSeparator from "./TasksSeparator"
 
 const Task = () => {
     const [tasks, setTask] = useState(TASKS)
-    const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState()
+    const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false)
 
     const morningTasks = tasks.filter((task) => task.time === "morning")
     const afternoonTasks = tasks.filter((task) => task.time === "afternoon")

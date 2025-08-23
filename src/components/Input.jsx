@@ -27,7 +27,6 @@ Input.propTypes = {
     errorMessage: PropTypes.string,
     placeholder: PropTypes.string,
     id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
 }
 
 export default Input
