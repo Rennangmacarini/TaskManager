@@ -19,15 +19,11 @@ const Task = () => {
 
     useEffect(() => {
         const fetchTasks = async () => {
-            // preciso pegar os dados da API
             const response = await fetch("http://localhost:3000/tasks", {
                 method: "GET",
             })
-
             const tasks = await response.json()
-
             setTasks(tasks)
-            // após pegar os dados da API, atualizar o meu state "tasks"
         }
 
         fetchTasks()
@@ -68,7 +64,18 @@ const Task = () => {
         setTasks(newTasks)
     }
 
-    const handleAddTaskSubmit = (task) => {
+    const handleAddTaskSubmit = async (task) => {
+        const response = await fetch("http://localhost:3000/tasks", {
+            method: "POST",
+            body: JSON.stringify(task),
+        })
+
+        if (!response.ok) {
+            return toast.error(
+                "Erro ao adicionar uma tarefa, por favor, tente novamente."
+            )
+        }
+
         setTasks([...tasks, task])
         toast.success("Tarefa adicionada com sucesso!")
     }
