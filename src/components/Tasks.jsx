@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 import {
@@ -8,15 +8,30 @@ import {
     SunIcon,
     TrashIcon,
 } from "../assets/icons"
-import TASKS from "../constants/tasks"
 import AddTaskDialog from "./AddTaskDialog"
 import Button from "./Button"
 import TaskItem from "./TaskItem"
 import TaskSeparator from "./TasksSeparator"
 
 const Task = () => {
-    const [tasks, setTask] = useState(TASKS)
+    const [tasks, setTasks] = useState([])
     const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false)
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            // preciso pegar os dados da API
+            const response = await fetch("http://localhost:3000/tasks", {
+                method: "GET",
+            })
+
+            const tasks = await response.json()
+
+            setTasks(tasks)
+            // após pegar os dados da API, atualizar o meu state "tasks"
+        }
+
+        fetchTasks()
+    }, [])
 
     const morningTasks = tasks.filter((task) => task.time === "morning")
     const afternoonTasks = tasks.filter((task) => task.time === "afternoon")
@@ -24,7 +39,7 @@ const Task = () => {
 
     const handleTaskDeleteClick = (taskId) => {
         const newTasks = tasks.filter((task) => task.id !== taskId)
-        setTask(newTasks)
+        setTasks(newTasks)
         toast.success("Tarefa deletada com sucesso!")
     }
 
@@ -50,11 +65,11 @@ const Task = () => {
             return task
         })
 
-        setTask(newTasks)
+        setTasks(newTasks)
     }
 
     const handleAddTaskSubmit = (task) => {
-        setTask([...tasks, task])
+        setTasks([...tasks, task])
         toast.success("Tarefa adicionada com sucesso!")
     }
 
