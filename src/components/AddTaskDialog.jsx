@@ -6,19 +6,27 @@ import { createPortal } from "react-dom"
 import { CSSTransition } from "react-transition-group"
 import { v4 } from "uuid"
 
+import { LoaderIcon } from "../assets/icons"
 import Button from "./Button"
 import Input from "./Input"
 import TimeSelect from "./TimeSelect"
 
-const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
+const AddTaskDialog = ({
+    isOpen,
+    handleClose,
+    onSubmiteSucess,
+    onSubmiteError,
+}) => {
     const [errors, setErrors] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     const nodeRef = useRef()
     const titleRef = useRef()
     const descriptionRef = useRef()
     const timeRef = useRef()
 
-    const handleSaveClick = () => {
+    const handleSaveClick = async () => {
+        setIsLoading(true)
         const newErros = []
 
         const title = titleRef.current.value
@@ -49,16 +57,29 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
         setErrors(newErros)
 
         if (newErros.length > 0) {
-            return
+            return setIsLoading(false)
         }
 
-        handleSubmit({
+        const task = {
             id: v4(),
             title,
             time,
             description,
             status: "not_started",
+        }
+
+        const response = await fetch("http://localhost:3000/tasks", {
+            method: "POST",
+            body: JSON.stringify(task),
         })
+
+        if (!response.ok) {
+            setIsLoading(false)
+            return onSubmiteError()
+        }
+
+        onSubmiteSucess(task)
+        setIsLoading(false)
         handleClose()
     }
 
@@ -96,11 +117,13 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                                     placeholder="Insira o título da tarefa"
                                     errorMessage={titleError?.message}
                                     ref={titleRef}
+                                    disabled={isLoading}
                                 />
 
                                 <TimeSelect
                                     errorMessage={timeError?.message}
                                     ref={timeRef}
+                                    disabled={isLoading}
                                 />
 
                                 <Input
@@ -109,6 +132,7 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                                     placeholder="Descreva a tarefa"
                                     errorMessage={descriptionError?.message}
                                     ref={descriptionRef}
+                                    disabled={isLoading}
                                 />
 
                                 <div className="flex gap-3">
@@ -124,7 +148,11 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                                         size="large"
                                         className="w-full"
                                         onClick={handleSaveClick}
+                                        disabled={isLoading}
                                     >
+                                        {isLoading && (
+                                            <LoaderIcon className="animate-spin" />
+                                        )}
                                         Salvar
                                     </Button>
                                 </div>
