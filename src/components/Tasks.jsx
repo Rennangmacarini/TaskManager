@@ -39,29 +39,26 @@ const Task = () => {
         toast.success("Tarefa deletada com sucesso!")
     }
 
-    const handleTaskCheckBoxClick = (taskId) => {
-        const newTasks = tasks.map((task) => {
+    const handleTaskCheckBoxClick = async (taskId) => {
+        const updatedTasks = tasks.map((task) => {
             if (task.id !== taskId) return task
 
-            if (task.status === "not_started") {
-                toast.success("Tarefa iniciada com sucesso!")
-                return { ...task, status: "in_progress" }
-            }
+            let newStatus = task.status
+            if (task.status === "not_started") newStatus = "in_progress"
+            else if (task.status === "in_progress") newStatus = "done"
+            else if (task.status === "done") newStatus = "not_started"
 
-            if (task.status === "in_progress") {
-                toast.success("Tarefa concluída com sucesso!")
-                return { ...task, status: "done" }
-            }
-
-            if (task.status === "done") {
-                toast.success("Tarefa reiniciada com sucesso!")
-                return { ...task, status: "not_started" }
-            }
-
-            return task
+            return { ...task, status: newStatus }
         })
 
-        setTasks(newTasks)
+        setTasks(updatedTasks)
+
+        const updatedTask = updatedTasks.find((t) => t.id === taskId)
+        await fetch(`http://localhost:3000/tasks/${taskId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: updatedTask.status }),
+        })
     }
 
     const onTaskSubmitSucess = (task) => {

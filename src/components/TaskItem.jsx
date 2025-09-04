@@ -44,7 +44,7 @@ const TaskItem = ({ task, handleCheckBoxClick, onDeleteSuccess }) => {
                 >
                     <input
                         type="checkbox"
-                        checked={task.status === "done"}
+                        checked={task.status === "done" && <CheckIcon />}
                         className="absolute h-full w-full cursor-pointer opacity-0"
                         onChange={() => handleCheckBoxClick(task.id)}
                     />
