@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useState } from "react"
 import { toast } from "sonner"
 
 import {
@@ -14,60 +15,49 @@ import TaskItem from "./TaskItem"
 import TaskSeparator from "./TasksSeparator"
 
 const Task = () => {
-    const [tasks, setTasks] = useState([])
-    const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false)
-
-    useEffect(() => {
-        const fetchTasks = async () => {
+    const queryClient = useQueryClient()
+    const { data: tasks } = useQuery({
+        queryKey: "tasks",
+        queryFn: async () => {
             const response = await fetch("http://localhost:3000/tasks", {
                 method: "GET",
             })
+
             const tasks = await response.json()
-            setTasks(tasks)
-        }
+            return tasks
+        },
+    })
 
-        fetchTasks()
-    }, [])
+    const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false)
 
-    const morningTasks = tasks.filter((task) => task.time === "morning")
-    const afternoonTasks = tasks.filter((task) => task.time === "afternoon")
-    const eveningTasks = tasks.filter((task) => task.time === "evening")
+    const morningTasks = tasks?.filter((task) => task.time === "morning")
+    const afternoonTasks = tasks?.filter((task) => task.time === "afternoon")
+    const eveningTasks = tasks?.filter((task) => task.time === "evening")
 
-    const onDeleteTaskSuccess = async (taskId) => {
-        const newTasks = tasks.filter((task) => task.id !== taskId)
-        setTasks(newTasks)
-        toast.success("Tarefa deletada com sucesso!")
-    }
+    const handleTaskCheckBoxClick = (taskId) => {
+        const newTask = tasks.map((task) => {
+            if (task.id !== taskId) {
+                return task
+            }
 
-    const handleTaskCheckBoxClick = async (taskId) => {
-        const updatedTasks = tasks.map((task) => {
-            if (task.id !== taskId) return task
+            if (task.status === "not_started") {
+                toast.success("Tarefa iniciada com sucesso!")
+                return { ...task, status: "in_progress" }
+            }
 
-            let newStatus = task.status
-            if (task.status === "not_started") newStatus = "in_progress"
-            else if (task.status === "in_progress") newStatus = "done"
-            else if (task.status === "done") newStatus = "not_started"
+            if (task.status === "in_progress") {
+                toast.success("Tarefa concluída com sucesso!")
+                return { ...task, status: "done" }
+            }
 
-            return { ...task, status: newStatus }
+            if (task.status === "done") {
+                toast.success("Tarefa reiniciada com sucesso!")
+                return { ...task, status: "not_started" }
+            }
+            return task
         })
 
-        setTasks(updatedTasks)
-
-        const updatedTask = updatedTasks.find((t) => t.id === taskId)
-        await fetch(`http://localhost:3000/tasks/${taskId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: updatedTask.status }),
-        })
-    }
-
-    const onTaskSubmitSucess = (task) => {
-        setTasks([...tasks, task])
-        toast.success("Tarefa adicionada com sucesso!")
-    }
-
-    const onTaskSubmitError = () => {
-        toast.error("Erro ao adicionar tarefa. Por favor, tente novamente.")
+        queryClient.setQueryData("tasks", newTask)
     }
 
     return (
@@ -92,8 +82,6 @@ const Task = () => {
                     <AddTaskDialog
                         isOpen={addTaskDialogIsOpen}
                         handleClose={() => setAddTaskDialogIsOpen(false)}
-                        onSubmiteSucess={onTaskSubmitSucess}
-                        onSubmiteError={onTaskSubmitError}
                     />
                 </div>
             </div>
@@ -103,51 +91,48 @@ const Task = () => {
                 {/* MANHÃ */}
                 <div className="space-y-3">
                     <TaskSeparator title="Manhã" icon={<SunIcon />} />
-                    {morningTasks.length === 0 && (
+                    {morningTasks?.length === 0 && (
                         <p className="text-sm text-brand-text-gray">
                             Nenhuma tarefa cadastrada para o período da manhâ
                         </p>
                     )}
-                    {morningTasks.map((task) => (
+                    {morningTasks?.map((task) => (
                         <TaskItem
                             key={task.id}
                             task={task}
                             handleCheckBoxClick={handleTaskCheckBoxClick}
-                            onDeleteSuccess={onDeleteTaskSuccess}
                         />
                     ))}
                 </div>
                 {/* TARDE */}
                 <div className="my-6 space-y-3">
                     <TaskSeparator title="Tarde" icon={<CloudSunIcon />} />
-                    {afternoonTasks.length === 0 && (
+                    {afternoonTasks?.length === 0 && (
                         <p className="text-sm text-brand-text-gray">
                             Nenhuma tarefa cadastrada para o período da tarde
                         </p>
                     )}
-                    {afternoonTasks.map((task) => (
+                    {afternoonTasks?.map((task) => (
                         <TaskItem
                             key={task.id}
                             task={task}
                             handleCheckBoxClick={handleTaskCheckBoxClick}
-                            onDeleteSuccess={onDeleteTaskSuccess}
                         />
                     ))}
                 </div>
                 {/* NOITE */}
                 <div className="my-6 space-y-3">
                     <TaskSeparator title="Noite" icon={<MoonIcon />} />
-                    {eveningTasks.length === 0 && (
+                    {eveningTasks?.length === 0 && (
                         <p className="text-sm text-brand-text-gray">
                             Nenhuma tarefa cadastrada para o período da noite
                         </p>
                     )}
-                    {eveningTasks.map((task) => (
+                    {eveningTasks?.map((task) => (
                         <TaskItem
                             key={task.id}
                             task={task}
                             handleCheckBoxClick={handleTaskCheckBoxClick}
-                            onDeleteSuccess={onDeleteTaskSuccess}
                         />
                     ))}
                 </div>
