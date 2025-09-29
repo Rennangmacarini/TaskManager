@@ -15,7 +15,7 @@ import Button from "./Button"
 import TaskItem from "./TaskItem"
 import TaskSeparator from "./TasksSeparator"
 
-const TasksRC = () => {
+const Tasks = () => {
     const queryClient = useQueryClient()
     const { data: tasks } = useGetTasks()
 
@@ -132,4 +132,4 @@ const TasksRC = () => {
     )
 }
 
-export default TasksRC
+export default Tasks

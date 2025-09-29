@@ -6,15 +6,20 @@ import ReactDOM from "react-dom/client"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { Toaster } from "sonner"
 
-import App from "./App.jsx"
+import HomePage from "./Pages/home.jsx"
 import TaskDetailsPage from "./Pages/taskDetails.jsx"
+import TasksPage from "./Pages/Tasks.jsx"
 
 const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <HomePage />,
+    },
+    {
+        path: "/tasks",
+        element: <TasksPage />,
     },
     {
         path: "/task/:taskId",
