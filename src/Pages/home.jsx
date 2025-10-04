@@ -12,7 +12,7 @@ const HomePage = () => {
     ).length
 
     const completedTasks = tasks?.filter(
-        (task) => task.status === "completed"
+        (task) => task.status === "done"
     ).length
 
     return (
