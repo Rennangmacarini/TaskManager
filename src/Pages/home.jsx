@@ -1,49 +1,39 @@
-import { Loader, TasksIcon, TasksTwo, Water } from "../assets/icons"
-import DashBoardCard from "../components/DashboardCard"
+import DashboardCards from "../components/DashboardCards"
 import Header from "../components/Header"
 import Sidebar from "../components/Sidebar"
+import TaskItem from "../components/TaskItem"
 import { useGetTasks } from "../hooks/data/use-get-tasks"
 
 const HomePage = () => {
     const { data: tasks } = useGetTasks()
-
-    const inProgressTasks = tasks?.filter(
-        (task) => task.status === "in_progress"
-    ).length
-
-    const completedTasks = tasks?.filter(
-        (task) => task.status === "done"
-    ).length
-
     return (
         <div className="flex">
             <Sidebar />
             <div className="w-full space-y-6 px-8 py-16">
                 <Header subtitle="Dashboard" title="Dashboard" />
-                <div className="grid grid-cols-4 gap-9">
-                    <DashBoardCard
-                        icon={<TasksTwo />}
-                        mainText={tasks?.length}
-                        secondaryText="Tarefas disponíveis"
-                    />
+                <DashboardCards />
+                <div className="grid grid-cols-[1.5fr,1fr] gap-6">
+                    <div className="space-y-6 rounded-[10px] bg-white p-6">
+                        <div className="text-xl font-semibold">
+                            <h3>Tarefas</h3>
+                            <span className="text-sm text-brand-dark-gray">
+                                Resumo das tarefas disponíveis
+                            </span>
+                        </div>
 
-                    <DashBoardCard
-                        icon={<TasksIcon />}
-                        mainText={completedTasks}
-                        secondaryText="Tarefas concluídas"
-                    />
+                        <div className="space-y-3">
+                            {tasks?.map((task) => (
+                                <TaskItem key={task.id} task={task} />
+                            ))}
+                        </div>
+                    </div>
 
-                    <DashBoardCard
-                        icon={<Loader />}
-                        mainText={inProgressTasks}
-                        secondaryText="Tarefas andamento"
-                    />
-
-                    <DashBoardCard
-                        icon={<Water />}
-                        mainText="5"
-                        secondaryText="Água"
-                    />
+                    <div className="flex items-center justify-items-center space-y-6 rounded-[10px] bg-white p-6">
+                        <p className="text-brand-dark-gray">
+                            Cada pequena ação de hoje te aproxima das grandes
+                            conquistas de amanhâ. Faça o que precisa ser feito!
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
